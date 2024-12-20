@@ -1,21 +1,31 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace BlazorMvvmApp.Features.Todos;
 
-public partial class TodoViewModel : ObservableRecipient
+public partial class TodoViewModel
+    : ObservableRecipient, IDisposable
 {
+    private readonly ITodoService _todoService;
+
+    public TodoViewModel(ITodoService todoService)
+    {
+        ArgumentNullException.ThrowIfNull(todoService);
+        
+        _todoService = todoService;
+        
+        // Subscribe to collection changes
+        _todoService.Items.CollectionChanged += OnItemsCollectionChanged;
+    }
+    
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddItemCommand))]
     private string _newItemTitle = string.Empty;
 
-    public ObservableCollection<TodoItem> Items { get; } =
-    [
-        new() { Title = "Learn about Blazor", IsComplete = true },
-        new() { Title = "Build a Blazor app", IsComplete = false }
-    ];
+    public ObservableCollection<TodoItem> Items
+        => _todoService.Items;
 
     [RelayCommand(CanExecute = nameof(CanAddItem))]
     private void AddItem()
@@ -23,9 +33,6 @@ public partial class TodoViewModel : ObservableRecipient
         var newItem = new TodoItem { Title = NewItemTitle, IsComplete = false };
         Items.Add(newItem);
         NewItemTitle = string.Empty;
-        
-        // Publish the message
-        WeakReferenceMessenger.Default.Send(new TodoAddedMessage(newItem));
     }
 
     private bool CanAddItem()
@@ -41,9 +48,18 @@ public partial class TodoViewModel : ObservableRecipient
     [RelayCommand]
     private async Task LoadTodosAsync()
     {
-        // Simulate async data loading
-        await Task.Delay(500);
-        Items.Add(new TodoItem { Title = "Async Todo 1", IsComplete = false });
-        Items.Add(new TodoItem { Title = "Async Todo 2", IsComplete = true });
+        await _todoService.LoadTodosAsync();
+    }
+    
+    private void OnItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // Notify the UI that the Items collection has changed
+        OnPropertyChanged(nameof(Items));
+    }
+    
+    public void Dispose()
+    {
+        _todoService.Items.CollectionChanged -= OnItemsCollectionChanged;
+        GC.SuppressFinalize(this);
     }
 }

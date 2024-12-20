@@ -1,5 +1,6 @@
 using BlazorMvvmApp;
 using BlazorMvvmApp.Components;
+using BlazorMvvmApp.Features.Todos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddRazorComponents()
 
 // Register ViewModels
 builder.Services.AddMvvm();
+builder.Services.AddSingleton<ITodoService, TodoService>();
 
 var app = builder.Build();
 

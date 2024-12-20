@@ -1,20 +1,45 @@
+using System.Collections.Specialized;
 using BlazorMvvmApp.Features.Todos;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace BlazorMvvmApp.Features.Stats;
 
-public partial class StatsViewModel : ObservableRecipient
+public partial class StatsViewModel
+    : ObservableRecipient, IDisposable
 {
-    [ObservableProperty]
-    private int totalTodos;
+    private readonly ITodoService _todoService;
 
-    public StatsViewModel()
+    [ObservableProperty]
+    private int _totalTodos;
+
+    public StatsViewModel(ITodoService todoService)
     {
-        // Subscribe to messages
-        WeakReferenceMessenger.Default.Register<TodoAddedMessage>(this, (r, m) =>
+        ArgumentNullException.ThrowIfNull(todoService);
+        
+        _todoService = todoService;
+        _totalTodos = _todoService.Items.Count;
+
+        // Subscribe to collection changes
+        _todoService.Items.CollectionChanged += OnItemsCollectionChanged;
+    }
+
+    private void OnItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        switch (e.Action)
         {
-            TotalTodos++;
-        });
+            case NotifyCollectionChangedAction.Add:
+                TotalTodos += e.NewItems?.Count ?? 0;
+                break;
+            case NotifyCollectionChangedAction.Remove:
+                TotalTodos -= e.OldItems?.Count ?? 0;
+                break;
+        }
+        // Handle other actions if necessary
+    }
+
+    public void Dispose()
+    {
+        _todoService.Items.CollectionChanged -= OnItemsCollectionChanged;
+        GC.SuppressFinalize(this);
     }
 }

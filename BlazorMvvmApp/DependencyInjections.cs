@@ -8,18 +8,18 @@ public static class DependencyInjections
 {
     public static void AddMvvm(this IServiceCollection services)
     {
-        services.RegisterViewModels();
         services.RegisterMessenger();
+        services.RegisterViewModels();
+    }
+    
+    private static void RegisterMessenger(this IServiceCollection services)
+    {
+        services.AddSingleton<IMessenger, WeakReferenceMessenger>();
     }
     
     private static void RegisterViewModels(this IServiceCollection services)
     {
         services.AddSingleton<TodoViewModel>();
         services.AddSingleton<StatsViewModel>();
-    }
-
-    private static void RegisterMessenger(this IServiceCollection services)
-    {
-        services.AddSingleton<IMessenger, WeakReferenceMessenger>();
     }
 }
