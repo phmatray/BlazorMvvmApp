@@ -1,0 +1,42 @@
+# Contributing to Blazor MVVM Todo App
+
+Thank you for considering contributing to the Blazor MVVM Todo App! 🎉
+
+## How to Contribute
+
+1. **Fork the Repository**
+   - Click the "Fork" button at the top-right corner of the repository page.
+
+2. **Clone Your Fork**
+   ```bash
+   git clone https://github.com/yourusername/BlazorMvvmApp.git
+   cd BlazorMvvmApp
+   ```
+
+3. **Create a Feature Branch**
+   ```bash
+   git checkout -b feature/YourFeatureName
+   ```
+
+4. **Commit Your Changes**
+   ```bash
+   git commit -m "Add detailed description of changes"
+   ```
+
+5. **Push to Your Fork**
+   ```bash
+   git push origin feature/YourFeatureName
+   ```
+
+6. **Open a Pull Request**
+   - Navigate to your fork on GitHub and click "Compare & pull request".
+
+## Code of Conduct
+
+Please adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and respectful environment for all contributors.
+
+## Reporting Issues
+
+If you encounter any bugs or have feature requests, please open an issue in the [Issues](https://github.com/yourusername/BlazorMvvmApp/issues) section.
+
+Thank you for contributing!
