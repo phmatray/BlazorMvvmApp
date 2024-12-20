@@ -1,0 +1,19 @@
+@page "/"
+@page "/todos"
+@inherits ViewModelComponentBase<TodoViewModel>
+
+<h3>Todo List</h3>
+
+<input @bind="ViewModel.NewItemTitle" placeholder="New todo" />
+<button @onclick="() => ViewModel.AddItemCommand.Execute(null)"
+        disabled="@( !ViewModel.AddItemCommand.CanExecute(null) )">Add</button>
+
+<ul>
+  @foreach (var item in ViewModel.Items)
+  {
+    <li>
+      <input type="checkbox" checked="@item.IsComplete" @onchange="() => ViewModel.ToggleCompleteCommand.Execute(item)" />
+      @item.Title
+    </li>
+  }
+</ul>
