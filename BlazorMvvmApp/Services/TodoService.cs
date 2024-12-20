@@ -1,8 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using BlazorMvvmApp.Features.Todos;
 
-namespace BlazorMvvmApp.Features.Todos;
+namespace BlazorMvvmApp.Services;
 
 public class TodoService : ITodoService, INotifyPropertyChanged
 {

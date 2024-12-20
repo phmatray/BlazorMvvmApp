@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
+using BlazorMvvmApp.Features.Todos;
 
-namespace BlazorMvvmApp.Features.Todos;
+namespace BlazorMvvmApp.Services;
 
 public interface ITodoService
 {
