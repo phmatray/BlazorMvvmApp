@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **This repository has moved.** The code now lives in **[Atypical-Consulting/blazor-state](https://github.com/Atypical-Consulting/blazor-state)** under [`samples/mvvm-todo`](https://github.com/Atypical-Consulting/blazor-state/tree/main/samples/mvvm-todo) — full git history preserved. This repository is archived (read-only).
+
 ![BlazorMvvmApp banner](.github/banner.png)
 
 # Blazor MVVM Todo App
